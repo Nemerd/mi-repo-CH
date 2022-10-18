@@ -72,8 +72,21 @@ class Contenedor{
 
 const mock = new Contenedor("./practica.json");
 
-console.log(mock.save({hola: "mundo"}))
-console.log(mock.save({hello: "world"}))
+console.log(mock.save({                                                                                                                                                    
+    title: 'Escuadra',
+    price: 123.45,
+    thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png'
+}))
+console.log(mock.save({                                                                                                                                                    
+    title: 'Calculadora',
+    price: 234.56,
+    thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/calculator-math-tool-school-256.png'
+}))
+console.log(mock.save({                                                                                                                                                    
+    title: 'Globo Terráqueo',
+    price: 345.67,
+    thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png'
+}))
 
 console.log(mock.getById(3));
 mock.deleteById(2)
