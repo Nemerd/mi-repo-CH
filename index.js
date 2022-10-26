@@ -1,10 +1,15 @@
 const fs = require("fs");
+const express = require("express");
+const PORT = 8080;
+
 
 class Contenedor{
     
     constructor(route) {
         this.route = route;
-        fs.writeFileSync(this.route, JSON.stringify([]), error => console.log(error))
+        if (!fs.existsSync(this.route)){
+            fs.writeFileSync(this.route, JSON.stringify([]), error => console.log(error))
+        }
         this.encoding = 'utf-8';
         this.lastId = 0;
     }
@@ -69,27 +74,18 @@ class Contenedor{
         }
     }
 }
+const container = new Contenedor("./productos.json");
 
-const mock = new Contenedor("./practica.json");
 
-console.log(mock.save({                                                                                                                                                    
-    title: 'Escuadra',
-    price: 123.45,
-    thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png'
-}))
-console.log(mock.save({                                                                                                                                                    
-    title: 'Calculadora',
-    price: 234.56,
-    thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/calculator-math-tool-school-256.png'
-}))
-console.log(mock.save({                                                                                                                                                    
-    title: 'Globo Terráqueo',
-    price: 345.67,
-    thumbnail: 'https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png'
-}))
+const server = express();
 
-console.log(mock.getById(3));
-mock.deleteById(2)
-console.log(mock.getById(1));
-mock.deleteAll()
-console.log(mock.getById(1));
+server.get("/productos", (request, response) => {
+    response.send(JSON.stringify(container.getAll()));
+})
+
+server.get("/productoRandom", (request, response) => {
+    const randomId = Math.floor(Math.random() * 3) + 1;
+    response.send(JSON.stringify(container.getById(randomId)));
+})
+
+server.listen(PORT);
