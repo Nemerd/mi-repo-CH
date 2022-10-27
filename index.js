@@ -76,15 +76,18 @@ class Contenedor{
 }
 const container = new Contenedor("./productos.json");
 
-
+// Desafío 6
 const server = express();
 
 server.get("/productos", (request, response) => {
+    // Devolver todos los productos
     response.send(JSON.stringify(container.getAll()));
 })
 
 server.get("/productoRandom", (request, response) => {
+    // Crear un ID al azar con la cantidad de elementos en el archivo
     const randomId = Math.floor(Math.random() * 3) + 1;
+    // Devolver el objeto con el ID al azar
     response.send(JSON.stringify(container.getById(randomId)));
 })
 
