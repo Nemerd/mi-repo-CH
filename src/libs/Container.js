@@ -1,8 +1,4 @@
 const fs = require("fs");
-const express = require("express");
-const { response } = require("express");
-const PORT = 8080;
-
 
 class Contenedor{
     
@@ -93,49 +89,4 @@ class Contenedor{
         return obj;
     }
 }
-const container = new Contenedor("./productos.json");
-
-// Desafío 6
-const server = express();
-server.use(express.json())
-server.use(express.urlencoded({ extended: true }))
-
-server.get("/productoRandom", (request, response) => {
-    // Crear un ID al azar con la cantidad de elementos en el archivo
-    const randomId = Math.floor(Math.random() * 3) + 1;
-    // Devolver el objeto con el ID al azar
-    response.json(container.getById(randomId));
-});
-
-server.get("/api/productos", (request, response) => {
-    // Devolver todos los productos
-    response.json(container.getAll());
-});
-
-server.get("/api/productos/:id", (request, response) => {
-    // Devuelve un producto según su id
-    const { id } = request.params;
-    response.json(container.getById(id));
-});
-
-server.post("/api/productos", (request, response) => {
-    // Recibe y agrega un producto, y lo devuelve con su id asignado
-    /* container.save guarda el objeto y devuelve el id, que usamos para
-     * acceder de nuevo y mandar el objeto. */
-    response.json(container.getById(container.save(request.body)))
-});
-
-server.put("/api/productos/:id", (request, response) => {
-    // Recibe y actualiza un producto según su id
-    const { id } = request.params
-    response.json(container.updateById(id, request.body))
-});
-
-server.delete("/api/productos/:id", (request, response) => {
-    // Elimina un producto según su id
-    const { id } = request.params;
-    container.deleteById(id);
-    response.json("Deleted")
-});
-
-server.listen(PORT);
+module.exports = Contenedor;
