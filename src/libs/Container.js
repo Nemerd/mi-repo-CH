@@ -34,7 +34,8 @@ class Contenedor{
             let listOfObjects = []
             const file = fs.readFileSync(this.route, this.encoding)
             listOfObjects = [...JSON.parse(file)]
-            return listOfObjects.find(i => i.id === parseInt(num)) || null; /* Object */
+            return listOfObjects.find(i => i.id === parseInt(num))
+                    || { error: 'Producto no encontrado'}; /* Object */
         } catch (error) {
             console.log(`Ocurió un error en Contenedor.getById: ${error}`);
             return null;
@@ -56,6 +57,9 @@ class Contenedor{
             const file = fs.readFileSync(this.route, this.encoding);
             const listOfObjects = JSON.parse(file);
             const deleteIndex = listOfObjects.findIndex(i => i.id === parseInt(num));
+            if (deleteIndex === -1){
+                return { error: 'Producto no encontrado'}
+            }
             listOfObjects.splice(deleteIndex, 1);
             fs.writeFileSync(this.route, JSON.stringify(listOfObjects));
         } catch (error) {
@@ -74,19 +78,24 @@ class Contenedor{
 
     updateById(id, update){
         // Recibe una actualización y la aplica
-
+        
         // Traemos el objeto y lo actualizamos
         let obj = this.getById(id);
-        obj = { ...obj, ...update };
-
-        // Abrimos el archivo y buscamos el index del elememento que tenemos que actualizar
-        let file = [...JSON.parse(fs.readFileSync(this.route, this.encoding))];
-        const modifyIndex = file.findIndex((i) => i.id === parseInt(id));
-        // Modificamos el array que nos sirve de base de datos y escribimos las modificaciones
-        file[modifyIndex] = obj;
-        fs.writeFileSync(this.route, JSON.stringify(file));
-
-        return obj;
+        
+        if (!obj.error){
+            obj = { ...obj, ...update };
+    
+            // Abrimos el archivo y buscamos el index del elememento que tenemos que actualizar
+            let file = [...JSON.parse(fs.readFileSync(this.route, this.encoding))];
+            const modifyIndex = file.findIndex((i) => i.id === parseInt(id));
+            // Modificamos el array que nos sirve de base de datos y escribimos las modificaciones
+            file[modifyIndex] = obj;
+            fs.writeFileSync(this.route, JSON.stringify(file));
+    
+            return obj;            
+        } else if (obj.error){
+            return { error: 'Producto no encontrado'}
+        }
     }
 }
 module.exports = Contenedor;

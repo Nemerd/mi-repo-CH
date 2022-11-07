@@ -32,8 +32,7 @@ myRouter.put("/productos/:id", (request, response) => {
 myRouter.delete("/productos/:id", (request, response) => {
     // Elimina un producto según su id
     const { id } = request.params;
-    container.deleteById(id);
-    response.json("Deleted")
+    response.json(container.deleteById(id));
 });
 
 module.exports = myRouter;
