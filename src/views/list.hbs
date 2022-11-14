@@ -1,8 +1,12 @@
 <nav>
     <a href="/">Home</a>
 </nav>
-{{#each products}}
 <ul>
-    <li>{{this.title}}</li>
+    {{#each products}}
+    <li>
+        <p>{{this.title}}</p>
+        <p>{{this.price}}</p>
+        <img src={{this.thumbnail}}>
+    </li>
+    {{/each}}
 </ul>
-{{/each}}
