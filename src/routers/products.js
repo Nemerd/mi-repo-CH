@@ -3,7 +3,7 @@ const myRouter = Router();
 const Contenedor = require("../libs/Container");
 const fs = require("fs");
 
-const container = new Contenedor("mock/productos.json")
+const container = new Contenedor(__dirname + "/../../mock/productos.json")
 
 myRouter.get("/productos", (request, response) => {
     // Devolver todos los productos
