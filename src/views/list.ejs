@@ -1,0 +1,14 @@
+<a href="/">Home</a>
+<ul>
+    <% for (const item of products) {%>
+        <li>
+            <p>
+                <%= item.title %>
+            </p>
+            <p>
+                <%= item.price %>
+            </p>
+            <img src=<%=item.thumbnail %>>
+        </li>
+        <% } %>
+</ul>

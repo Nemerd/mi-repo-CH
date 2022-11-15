@@ -1,13 +1,13 @@
 // Desafío Motores de plantillas
 const express = require("express");
-const myRouter = require("./routers/products-ejs");
+const myRouter = require("./routers/products-handlebars");
 
 
 const PORT = 8080;
 
 const server = express();
 
-server.set("view engine", "ejs")
+server.set("view engine", "pug")
 server.set("views", __dirname + "/views/")
 
 server.use(express.json());
@@ -15,7 +15,7 @@ server.use(express.urlencoded({ extended: true }));
 server.use("/", myRouter);
 
 server.get("/", (req, res) => {
-    res.render("main", { products: false })
+    res.render("main.pug")
 })
 
 server.use(express.static("public"))
