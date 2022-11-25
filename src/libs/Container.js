@@ -83,7 +83,15 @@ class Contenedor {
         let obj = this.getById(id);
 
         if (!obj.error) {
-            obj = { ...obj, ...update };
+
+            for (const property in obj) {
+                if (update[property] && property !== "id") {
+                    obj[property] = update[property]
+                }
+            }
+
+            console.log(obj);
+            // obj = { ...obj, ...update };
 
             // Abrimos el archivo y buscamos el index del elememento que tenemos que actualizar
             let file = [...JSON.parse(fs.readFileSync(this.route, this.encoding))];
