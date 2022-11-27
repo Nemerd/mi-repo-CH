@@ -8,7 +8,10 @@ const products = new Contenedor(__dirname + "/../../mock/productos.json")
 
 cartRouter.post("/", (request, response) => {
     // Crea un carrito y devuelve su id
-    response.json(cart.save({ productos: [] }))
+    response.json(cart.save({
+        timestamp: Date.now(),
+        productos: {}
+    }))
 })
 cartRouter.delete("/:id", (request, response) => {
     // Vacía un carrito y lo elimina
