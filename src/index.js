@@ -11,5 +11,12 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use("/api/productos", myRouter);
 server.use("/api/carrito", cartRouter);
+server.use((req, res, next) => {
+    res.status(500).json(
+        {
+            "error": -2,
+            "descripcion": `ruta ${req.url} método ${req.method} no implementada`
+        })
+})
 
 server.listen(process.env.PORT);
