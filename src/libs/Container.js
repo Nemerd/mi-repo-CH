@@ -9,7 +9,7 @@ class Contenedor {
             fs.writeFileSync(this.route, JSON.stringify([]), error => console.log(error))
         }
         this.encoding = 'utf-8';
-        this.lastId = 3;
+        this.lastId = [...JSON.parse(fs.readFileSync(this.route, this.encoding))].length;
     }
 
     save(obj) {
@@ -89,9 +89,6 @@ class Contenedor {
                     obj[property] = update[property]
                 }
             }
-
-            console.log(obj);
-            // obj = { ...obj, ...update };
 
             // Abrimos el archivo y buscamos el index del elememento que tenemos que actualizar
             let file = [...JSON.parse(fs.readFileSync(this.route, this.encoding))];
