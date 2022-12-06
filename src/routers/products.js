@@ -1,10 +1,19 @@
 require('dotenv').config()
 const { Router } = require("express");
 const myRouter = Router();
-const Contenedor = require("../libs/Container");
-const fs = require("fs");
+const Contenedor = require("../libs/Container.js");
 
-const container = new Contenedor(__dirname + "/../../mock/productos.json")
+const container = new Contenedor(
+    {
+        client: 'mysql',
+        connection: {
+            host: '127.0.0.1',
+            user: 'root',
+            port: 3306,
+            password: '',
+            database: `eCommerce`
+        }
+    }, 'products')
 function isAdmin(req, res, next) {
     if (process.env.IS_ADMIN === "true") {
         console.log("Eres admin");
@@ -18,34 +27,34 @@ function isAdmin(req, res, next) {
     }
 }
 
-myRouter.get("/", (request, response) => {
+myRouter.get("/", async (request, response) => {
     // Devolver todos los productos
-    response.json(container.getAll());
+    response.json(await container.getAll());
 });
 
-myRouter.get("/:id", (request, response) => {
+myRouter.get("/:id", async (request, response) => {
     // Devuelve un producto según su id
     const { id } = request.params;
-    response.json(container.getById(id));
+    response.json(await container.getById(id));
 });
 
-myRouter.post("/", isAdmin, (request, response) => {
+myRouter.post("/", isAdmin, async (request, response) => {
     // Recibe y agrega un producto, y lo devuelve con su id asignado
     /* container.save guarda el objeto y devuelve el id, que usamos para
      * acceder de nuevo y mandar el objeto. */
-    response.json(container.getById(container.save(request.body)))
+    response.json(await container.getById(await container.save(request.body)))
 });
 
-myRouter.put("/:id", isAdmin, (request, response) => {
+myRouter.put("/:id", isAdmin, async (request, response) => {
     // Recibe y actualiza un producto según su id
     const { id } = request.params
-    response.json(container.updateById(id, request.body))
+    response.json(await container.updateById(id, request.body))
 });
 
-myRouter.delete("/:id", isAdmin, (request, response) => {
+myRouter.delete("/:id", isAdmin, async (request, response) => {
     // Elimina un producto según su id
     const { id } = request.params;
-    response.json(container.deleteById(id));
+    await container.deleteById(id) ? response.status(200).send() : response.status(500).send()
 });
 
 module.exports = myRouter;

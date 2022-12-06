@@ -1,9 +1,30 @@
 const { Router } = require("express")
 const cartRouter = Router()
-const Contenedor = require("../libs/Container")
+const Contenedor = require("../libs/Container.js")
 
-const cart = new Contenedor(__dirname + "/../../mock/cart.json")
-const products = new Contenedor(__dirname + "/../../mock/productos.json")
+const cart = new Contenedor(
+    {
+        client: 'mysql',
+        connection: {
+            host: '127.0.0.1',
+            user: 'root',
+            port: 3306,
+            password: '',
+            database: `eCommerce`
+        }
+    }, 'cart')
+
+const products = new Contenedor(
+    {
+        client: 'mysql',
+        connection: {
+            host: '127.0.0.1',
+            user: 'root',
+            port: 3306,
+            password: '',
+            database: `eCommerce`
+        }
+    }, 'products')
 
 
 cartRouter.post("/", (request, response) => {

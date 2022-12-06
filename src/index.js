@@ -2,8 +2,6 @@ require('dotenv').config()
 const express = require("express");
 const myRouter = require("./routers/products");
 const cartRouter = require("./routers/cart")
-const fs = require("fs")
-const Contenedor = require("./libs/Container");
 
 const server = express();
 
